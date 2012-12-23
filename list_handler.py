@@ -41,9 +41,16 @@ class ListHandler:
     for item in self.items:
       self.file_handler.write( item.text )
 
-  def output( self ):
+  def output( self, tag = None ):
+    if tag and tag[0] != "#":
+      tag = "#"+tag
+
     for item in self.items:
-      print( item.render() )
+      if tag is None:
+          print( item.render() )
+      else:
+        if tag in item.tags:
+          print( item.render() )
 
   def decide_tag_colours(self,  item ):
     """ Takes an item, decide its tag colours and assign them """

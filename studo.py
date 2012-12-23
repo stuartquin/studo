@@ -29,6 +29,10 @@ class StuDo:
                                 type=int,
                                 required=False)
 
+    parent_parser.add_argument( "-t", "--tag",
+                                type=str,
+                                required=False)
+
     args = parent_parser.parse_args()
 
     # Either adding or listing
@@ -39,7 +43,7 @@ class StuDo:
     if args.delete:
       self.delete_item( args.delete )
 
-    self.list_items()
+    self.list_items( args.tag )
 
   def add_item( self, item ):
     self.list_handler.add_item( unicode(item) )
@@ -47,8 +51,8 @@ class StuDo:
   def delete_item( self, item_id ):
     self.list_handler.delete_item( item_id )
 
-  def list_items( self ):
-    self.list_handler.output()
+  def list_items( self, tag ):
+    self.list_handler.output( tag )
 
 if __name__ == "__main__":
   stu_do = StuDo()
