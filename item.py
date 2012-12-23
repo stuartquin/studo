@@ -2,8 +2,9 @@ import re
 
 class Item:
 
-  def __init__( self, item_text ):
+  def __init__( self, id, item_text ):
     # mapping from tag to colour
+    self.id          = id
     self.tag_colours = {}
     # Raw text content of an item
     self.text   = item_text
@@ -21,6 +22,8 @@ class Item:
     self.pretty = re.sub( tag,
                           colour + tag + ConsoleColours.ENDC,
                           self.pretty )
+  def render( self ):
+    return unicode(self.id) + ") " + self.pretty
 
 class ConsoleColours:
   CYAN    = '\033[96m'

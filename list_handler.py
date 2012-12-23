@@ -15,7 +15,7 @@ class ListHandler:
 
   def __init__( self ):
     self.items   = []
-    self.file_handler   = open("/home/stuart/Dropbox/epistle/studo.txt", "r+")
+    self.file_handler   = open("/home/stuart/Dropbox/epistle/studo.txt", "a+")
     self.colour_counter = 0
     # Keep track of tags we've already coloured
     self.tag_colour_map = {}
@@ -23,15 +23,27 @@ class ListHandler:
 
   def load_list( self ):
     contents = self.file_handler.readlines()
+    self.item_count    = 1
 
     for line in contents:
-      item = Item( line )
+      item = Item( self.item_count, line )
+      self.item_count += 1
       self.decide_tag_colours( item )
       self.items.append( item )
 
+  def delete_item( self, item_id ):
+    self.items.pop( item_id-1 )
+    self.write_list()
+
+  def write_list( self ):
+    self.file_handler.close()
+    self.file_handler   = open("/home/stuart/Dropbox/epistle/studo.txt", "w")
+    for item in self.items:
+      self.file_handler.write( item.text )
+
   def output( self ):
     for item in self.items:
-      print( item.pretty )
+      print( item.render() )
 
   def decide_tag_colours(self,  item ):
     """ Takes an item, decide its tag colours and assign them """
@@ -45,5 +57,7 @@ class ListHandler:
 
       item.colourify( tag, self.tag_colour_map[tag] )
 
-  def add_item( self, item ):
-    self.file_handler.write( item.text+"\n" )
+  def add_item( self, item_text ):
+    self.item_count += 1
+    item = Item( self.item_count, item_text+"\n" )
+    self.file_handler.write( item.text )

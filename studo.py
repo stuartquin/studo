@@ -24,19 +24,28 @@ class StuDo:
     parent_parser.add_argument( "-a", "--add",
                                 type=str,
                                 required=False)
+
+    parent_parser.add_argument( "-d", "--delete",
+                                type=int,
+                                required=False)
+
     args = parent_parser.parse_args()
 
     # Either adding or listing
     if args.add:
       self.add_item( args.add )
-    else:
-      self.list_items()
+      return
 
-  def get_coloured( self ):
-    return self.text
+    if args.delete:
+      self.delete_item( args.delete )
+
+    self.list_items()
 
   def add_item( self, item ):
-    self.list_handler.add_item( Item( unicode(item) ) )
+    self.list_handler.add_item( unicode(item) )
+
+  def delete_item( self, item_id ):
+    self.list_handler.delete_item( item_id )
 
   def list_items( self ):
     self.list_handler.output()
