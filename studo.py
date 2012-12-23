@@ -1,8 +1,12 @@
 # simple command line app for creating and managing todos
 # Saves to plain text files
 import argparse
+import os
+import ConfigParser
+
 from list_handler import ListHandler
 from item import Item
+
 
 class StuDo:
 
@@ -10,12 +14,15 @@ class StuDo:
     self.app_description = """
         A simple command line utility for creating and managing plain text
         todo files"""
-    # Where to keep text files
-    # Needs moved to a config file
-    self.list_handler = ListHandler()
-
-    self.save_directory = "~/Dropbox/epistle/"
+    self.read_config()
+    # this is read from config
+    self.list_handler = ListHandler( self.save_file )
     self.parse_args()
+
+  def read_config( self, filename="~/.studo" ):
+    config = ConfigParser.ConfigParser()
+    config.read( os.path.expanduser( filename ) )
+    self.save_file = config.get("studo", "save_file", None)
 
   def parse_args( self ):
     """ Parses command line args and calls appropriate function """

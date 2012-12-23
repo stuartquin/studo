@@ -13,9 +13,10 @@ class ListHandler:
     ConsoleColours.ENDC
   ]
 
-  def __init__( self ):
+  def __init__( self, filename ):
     self.items   = []
-    self.file_handler   = open("/home/stuart/Dropbox/epistle/studo.txt", "a+")
+    self.filename       = filename
+    self.file_handler   = open(self.filename, "a+")
     self.colour_counter = 0
     # Keep track of tags we've already coloured
     self.tag_colour_map = {}
@@ -37,7 +38,7 @@ class ListHandler:
 
   def write_list( self ):
     self.file_handler.close()
-    self.file_handler   = open("/home/stuart/Dropbox/epistle/studo.txt", "w")
+    self.file_handler   = open(self.filename, "w")
     for item in self.items:
       self.file_handler.write( item.text )
 
@@ -65,6 +66,6 @@ class ListHandler:
       item.colourify( tag, self.tag_colour_map[tag] )
 
   def add_item( self, item_text ):
-    self.item_count += 1
     item = Item( self.item_count, item_text+"\n" )
-    self.file_handler.write( item.text )
+    self.item_count += 1
+    self.file_handler.write( item.get_numbered() )

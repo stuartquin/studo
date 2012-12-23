@@ -22,8 +22,11 @@ class Item:
     self.pretty = re.sub( tag,
                           colour + tag + ConsoleColours.ENDC,
                           self.pretty )
+  def get_numbered( self ):
+    return unicode(self.id) + ". " + self.text
+
   def render( self ):
-    return unicode(self.id) + ") " + self.pretty
+    return self.pretty
 
 class ConsoleColours:
   CYAN    = '\033[96m'
